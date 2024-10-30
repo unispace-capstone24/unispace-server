@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>메인 페이지</title>
+<script>
+
+        window.onload = () => {
+            fetch('/member')
+                .then(response => response.json())
+                .then(data => {
+                    let currentUser = document.getElementById('current-user');
+                    currentUser.innerText = `Current User: ${data.data.email} (${data.data.memberName})`;
+                });
+        };
+
+        function logout() {
+            fetch('/logout', {
+                method: 'POST'
+            })
+                .then(() => {
+                    window.location.href = '/login';
+                });
+        }
+    </script>
+</head>
+<body>
+	<h1>Posts</h1>
+	<div>
+		<p id="current-user"></p>
+		<button onclick="logout()">Logout</button>
+	</div>
+	<div>
+		<table id="posts-table">
+		</table>
+	</div>
+	<div>
+		<nav id="pagination"></nav>
+	</div>
+</body>
+</html>

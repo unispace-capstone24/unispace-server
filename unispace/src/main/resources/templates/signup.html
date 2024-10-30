@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Signup Form</title>
+</head>
+<body>
+	<h2>Signup Form</h2>
+	<form id="signupForm" method="post" th:action="@{/member}">
+		<div>
+			<label for="email">Email:</label> <input type="email" id="email"
+				name="email" />
+		</div>
+		<div>
+			<label for="password">Password:</label> <input type="password"
+				id="password" name="password" />
+		</div>
+		<div>
+			<label for="memberName">Membername:</label> <input type="text"
+				id="memberName" name="memberName" />
+
+		</div>
+		<div>
+			<button type="submit">Submit</button>
+		</div>
+	</form>
+
+	<script th:inline="javascript">
+  function submitSignupForm() {
+    console.log("submitSignupForm called");
+
+    var formData = {
+      email: document.getElementById("email").value,
+      password: document.getElementById("password").value,
+      memberName: document.getElementById("memberName").value
+    };
+
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/member");
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        console.log("AJAX request completed with status:", xhr.status);
+        console.log("AJAX request response:", xhr.responseText);
+
+        // Check if the status is 201 (Created) and redirect to the login page
+        if (xhr.status === 201) {
+          window.location.href = "/login";
+        }
+      }
+    };
+
+    xhr.send(JSON.stringify(formData));
+  }
+
+  document.getElementById("signupForm").addEventListener("submit", function(event) {
+    console.log("Form submit event listener called");
+    event.preventDefault();
+    submitSignupForm();
+  });
+
+
+</script>
+</body>
+</html>

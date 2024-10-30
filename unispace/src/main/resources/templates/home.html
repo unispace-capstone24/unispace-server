@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Home Page</title>
+</head>
+<body>
+	<h2>Welcome to the Home Page</h2>
+	<p>홈페이지 환영합니다 ~ ~ ~</p>
+	<form th:action="@{/login}" method="get">
+		<button type="submit">Login</button>
+	</form>
+</body>
+</html>
