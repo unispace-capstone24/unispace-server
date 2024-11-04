@@ -19,10 +19,6 @@ public class BlockService {
 
     private final BlockRepository blockRepository;
 
-//    private final PageRepository pageRepository;
-//
-//    private final MemberRepository memberRepository;
-
     private final MemberService memberService;
     private final PageService pageService;
 
@@ -78,6 +74,4 @@ public class BlockService {
         Block block = findOne(blockId);
         blockRepository.delete(block);
     }
-
-
 }

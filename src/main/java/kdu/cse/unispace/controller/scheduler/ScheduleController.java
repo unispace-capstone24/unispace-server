@@ -34,7 +34,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -55,7 +54,7 @@ public class ScheduleController {
     @PreAuthorize("@jwtAuthenticationFilter.isScheduleOwner(#request, #scheduleId)")
     public ResponseEntity<BasicResponse> schedule(@PathVariable("scheduleId") Long scheduleId,
                                                   HttpServletRequest request) {
-        Optional<Schedule> schedule = scheduleService.findSchedule(scheduleId);
+        Schedule schedule = scheduleService.findSchedule(scheduleId);
         List<ScheduleDto> collect = Collections.singletonList(new ScheduleDto(schedule));
         BasicResponse basicResponse = new BasicResponse<>(collect.size(), "스케줄 요청 성공", collect.get(0));
         return new ResponseEntity<>(basicResponse, HttpStatus.OK);
@@ -73,8 +72,8 @@ public class ScheduleController {
     @GetMapping("/schedule/{scheduleId}/categories") //카테고리 조회
     @PreAuthorize("@jwtAuthenticationFilter.isScheduleOwner(#request, #scheduleId)")
     public ResponseEntity<BasicResponse> categories(@PathVariable("scheduleId") Long scheduleId,
-                                                  HttpServletRequest request) {
-        Optional<Schedule> schedule = scheduleService.findSchedule(scheduleId);
+                                                    HttpServletRequest request) {
+        Schedule schedule = scheduleService.findSchedule(scheduleId);
         List<ScheduleCategoryDto> collect = Collections.singletonList(new ScheduleCategoryDto(schedule));
         BasicResponse basicResponse = new BasicResponse<>(collect.size(), "카테고리들 요청 성공", collect.get(0));
         return new ResponseEntity<>(basicResponse, HttpStatus.OK);
@@ -82,7 +81,7 @@ public class ScheduleController {
     @GetMapping("/schedule/{scheduleId}/easytodo") //간편입력 조회
     @PreAuthorize("@jwtAuthenticationFilter.isScheduleOwner(#request, #scheduleId)")
     public ResponseEntity<List<EasyCategory>> easyToDo(@PathVariable("scheduleId") Long scheduleId,
-                                                    HttpServletRequest request) {
+                                                       HttpServletRequest request) {
         List<EasyCategory> easyToDo = scheduleService.findEasyToDo(scheduleId);
 
         return new ResponseEntity<>(easyToDo, HttpStatus.OK);
@@ -96,7 +95,7 @@ public class ScheduleController {
     public ResponseEntity<CategoryBasicResponse> createCategory(@PathVariable("scheduleId") Long scheduleId,
                                                                 @RequestBody CategoryRequestDto categoryRequestDto,
                                                                 HttpServletRequest request) {
-        Optional<Schedule> schedule = scheduleService.findSchedule(scheduleId);
+        Schedule schedule = scheduleService.findSchedule(scheduleId);
 
         Category category = new Category(schedule, categoryRequestDto);
 

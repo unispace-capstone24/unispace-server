@@ -43,7 +43,7 @@ public class SpaceController {
         jwtAuthenticationFilter.isSpaceOwner( request, spaceId); //접근권한 확인
         Space space = spaceService.findOne(spaceId);
         Long pageId = pageService.makePage(spaceId, pageCreateRequestDto);
-        Optional<Page> page = pageService.findOne(pageId);
+        Page page = pageService.findOne(pageId);
 
         BasicResponse basicResponse = new BasicResponse<>(1, "페이지 생성 성공",new PageDto(page));
 
@@ -96,9 +96,4 @@ public class SpaceController {
 
         return new ResponseEntity<>(basicResponse, HttpStatus.OK);
     }
-
-
-
-
-
 }

@@ -15,7 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,8 +30,8 @@ public class ToDoController {
     public ResponseEntity<ToDoBasicResponse> createToDo(@PathVariable("categoryId") Long categoryId,
                                                         @RequestBody ToDoRequestDto toDoRequestDto,
                                                         HttpServletRequest request) {
-        Optional<Category> findCategory = categoryService.findCategory(categoryId);
-        ToDo todo = new ToDo(findCategory.orElse(null), toDoRequestDto.getDescription(),
+        Category findCategory = categoryService.findCategory(categoryId);
+        ToDo todo = new ToDo(findCategory, toDoRequestDto.getDescription(),
                 toDoRequestDto.getCompleted(), LocalDateTime.now(), true, null);
         // 카테고리에서 직접 투두 생성시 active는 무조건 true, UUID는 필요없음
 
@@ -49,8 +48,8 @@ public class ToDoController {
 
         ToDoBasicResponse createResponseDto = new ToDoBasicResponse(activeToDoId, SUCCESS, "투두가 활성화 되었습니다.");
         return new ResponseEntity<>(createResponseDto, HttpStatus.OK);
-    }
 
+    }
     @PatchMapping("/todo/{todoId}/today") // 오늘하기
     @PreAuthorize("@jwtAuthenticationFilter.isToDoOwner(#request, #todoId)")
     public ResponseEntity<ToDoBasicResponse> changeToday(@PathVariable("todoId") Long todoId,
@@ -60,17 +59,18 @@ public class ToDoController {
         ToDoBasicResponse createResponseDto =
                 new ToDoBasicResponse(activeToDoId, SUCCESS, "날짜가 오늘로 변경되었습니다.");
         return new ResponseEntity<>(createResponseDto, HttpStatus.OK);
-    }
 
+    }
     @PatchMapping("/todo/{todoId}/time") // 날짜 바꾸기
     @PreAuthorize("@jwtAuthenticationFilter.isToDoOwner(#request, #todoId)")
     public ResponseEntity<ToDoBasicResponse> changeToDoDate(@PathVariable("todoId") Long todoId,
-                                                            @RequestBody ChangeToDoRequestDto toDoRequestDto, // 변수명 소문자로 변경
+                                                            @RequestBody ChangeToDoRequestDto toDoRequestDto,
                                                             HttpServletRequest request) {
-        Long activeToDoId = toDoService.toDoServicechangeToDoDate(todoId, toDoRequestDto); // DTO 사용 수정
+        Long activeToDoId = toDoService.toDoServicechangeToDoDate(todoId, toDoRequestDto);
 
         ToDoBasicResponse createResponseDto =
                 new ToDoBasicResponse(activeToDoId, SUCCESS, "요청 날짜로 변경되었습니다.");
         return new ResponseEntity<>(createResponseDto, HttpStatus.OK);
+
     }
 }
