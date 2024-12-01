@@ -5,8 +5,8 @@ import kdu.cse.unispace.domain.QTeam;
 import kdu.cse.unispace.domain.Team;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.util.List;
 
 public class TeamRepositoryImpl extends QuerydslRepositorySupport implements TeamRepositoryCustom {
@@ -23,12 +23,11 @@ public class TeamRepositoryImpl extends QuerydslRepositorySupport implements Tea
         QTeam team = QTeam.team;
 
         JPAQuery<Team> jpaQuery = new JPAQuery<>(entityManager);
-        List<Team> results = jpaQuery.from(team)
+
+        return jpaQuery.from(team)
                 .where(team.teamName.containsIgnoreCase(query))
                 .orderBy(team.teamName.asc())
                 .limit(limit)
                 .fetch();
-
-        return results;
     }
 }
