@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -21,23 +20,15 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity // Spring Security 설정 활성화
 @RequiredArgsConstructor
-//@EnableGlobalAuthentication
 public class SecurityConfig {
 
-
     private final MyMemberDetailService myMemberDetailService;
+    private final MemberService memberService;
 
-    private final GoogleOauth2UserService googleOauth2UserService;
-
-
-    private final OAuth2AuthorizedClientService oath2;
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    private final MemberService memberService;
-
-
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -51,7 +42,6 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
